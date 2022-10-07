@@ -12,27 +12,14 @@ struct Comparator{
 };
 
 
-
-void greedy(){
-	int numOfPeople = 0;
-	int timeTillClosure = 0;
-	int amountOfCash = 0;
-	int timeTillLeaving = 0;
-	priority_queue<pair<int, int>, vector<pair<int,int>>, Comparator> Clients;
-
-	cin >> numOfPeople >> timeTillClosure;
-
-	for (int i  = 0; i < numOfPeople; i++){
-		cin >> amountOfCash >> timeTillLeaving;
-		Clients.push(make_pair(timeTillLeaving, amountOfCash));
-	}
-
-	int amountInBank = 0;
-	
-
-//	cout << "\n \n";
-
 	/*
+4 4
+1000 1
+2000 2
+500 2
+1200 0
+
+	
 10 10
 2000 0
 100 0
@@ -45,36 +32,66 @@ void greedy(){
 500 7
 500 7
 
+10 10
+10 0
+10 4
+10 0
+10 4
+10 5
+10 6
+10 3
+10 2
+10 1
+10 1
+10 8
+
 	*/
+
+
+void greedy(){
+	int numOfPeople = 0;
+	int timeTillClosure = 0;
+	int amountOfCash = 0;
+	int timeTillLeaving = 0;
+	priority_queue<pair<int, int>> Clients;
+
+	cin >> numOfPeople >> timeTillClosure;
+
+	for (int i  = 0; i < numOfPeople; i++){
+	//	cout << "Inserting!\n";
+		cin >> amountOfCash >> timeTillLeaving;
+		Clients.push(make_pair(timeTillLeaving, amountOfCash));
+	}
+
+	int amountInBank = 0;
+	
 
 	priority_queue<int> customerCash;
 	int customersDealtWith = 0;
 
-	for (int i = 0; i < timeTillClosure; i++){
+	for (int i = timeTillClosure - 1; i >= 0; i--){
 		customerCash = priority_queue<int>();
 
 
-//		cout << Clients.top().second << " ";
+	//	cout << Clients.top().second << " ";
 		if (!Clients.empty()){
-			if (Clients.top().first == i){
-				while (!Clients.empty() && Clients.top().first == i){
-//					cout << "Client leaving right now at" << i << " Cash they have " << Clients.top().second <<  "\n";
-		//			cout << Clients.top().second << " \n";
+
+			// This deals with the case that people are going to leave right now and we must deal with them
+			if (Clients.top().first >= i){
+				while (!Clients.empty() && Clients.top().first >= i){
+				//	cout << "Client leaving right now at" << i << " Cash they have " << Clients.top().second <<  "\n";
+				//	cout << Clients.top().second << " \n";
 					customerCash.push(Clients.top().second);
 					Clients.pop();
 				}
-			} else if (Clients.top().first > i){
-//				cout << "No one leaving right now at time " << i << " dealing with next customer: " << Clients.top().first << " They have $" << Clients.top().second << "\n";
-				customerCash.push(Clients.top().second);
-				Clients.pop();
-			}
-
-
-			if (!customerCash.empty()){
-				amountInBank += customerCash.top();
-	//			cout << amountInBank << " --> ";
-			}
+			// If no one needs to leave right now, then we just process the one that is going to leave next
+			} 
+			
 		}
+		if (!customerCash.empty()){
+				amountInBank += customerCash.top();
+			//	cout << "\nAmount in Bank: " << amountInBank << "\n";
+			}
 
 	}
 
