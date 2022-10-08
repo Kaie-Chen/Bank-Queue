@@ -4,15 +4,7 @@
 #include <queue>
 using namespace std;
 
-
-struct Comparator{
-	bool operator()(const pair<int, int> a, const pair<int, int> b) const{
-		return a.first > b.first;
-	}
-};
-
-
-	/*
+/*
 4 4
 1000 1
 2000 2
@@ -72,6 +64,8 @@ void greedy(){
 	int amountOfCash = 0;
 	int timeTillLeaving = 0;
 	priority_queue<pair<int, int>> Clients;
+	vector<pair<int,int>> sortedClients;
+
 
 	cin >> numOfPeople >> timeTillClosure;
 
@@ -81,69 +75,39 @@ void greedy(){
 		Clients.push(make_pair(timeTillLeaving, amountOfCash));
 	}
 
-
+	while(!Clients.empty()){
+		sortedClients.push_back(Clients.top());
+		Clients.pop();
+	}	
 	int amountInBank = 0;
 	
 
 	priority_queue<pair<int,int>> customerCash;
 	int customersDealtWith = 0;
 
+	int i = 0;
+	for(int time = sortedClients[i].first; time >= 0; time--){
 
-	for(int time = Clients.top().first; time >= 0; time--){
-			
-	//	cout << "Sorted Clients size:  " << Clients.size() << "  \n\n";
+	//	cout << "Vector state: \n";
 
+		for (pair<int,int> e : sortedClients){
+//			cout << e.first << " , " << e.second << "\n";
+		}
+				customerCash = priority_queue<pair<int,int>>();
+				i = 0;
+				while (i < sortedClients.size() && sortedClients[i].first >= time){
+	//				cout << " ( " << sortedClients[i].second << ", " << sortedClients[i].first << ") \n";
+					customerCash.push(make_pair(sortedClients[i].second , i));
+					i++;
 
-	
-
-			customerCash = priority_queue<pair<int,int>>();
-
-/*
-			if (Clients.top().first == time){
-				
-				while (!Clients.empty() && Clients.top().first == time){
-//					cout << Clients.top().first << " <= " << time << "? == > ";
-//					cout << Clients.top().second << "\n";
-					customerCash.push(make_pair(Clients.top().second,  Clients.top().first));
-//					cout << "Client leaving right now at" << Clients.top().first << " Cash they have " << Clients.top().second <<  "\n";
-//					cout << Clients.top().second << " \n";
-					Clients.pop();
-					
 				}
 				if (!customerCash.empty()){
 						amountInBank += customerCash.top().first;
-//						cout << "\nAmount in Bank: " << amountInBank << "\n";
+						
+						sortedClients.erase(sortedClients.begin()+customerCash.top().second);
 					}
-			// If no one needs to leave right now, then we just process the one that is going to leave next
-			} else 
-*/
-				while (!Clients.empty()  && Clients.top().first >= time){
-
-//					cout << Clients.top().first << " <= " << time << "? == > ";
-//					cout << Clients.top().second << "\n";
-					customerCash.push(make_pair(Clients.top().second , Clients.top().first));
-					Clients.pop();
-//					cout << "Client leaving right now at" << Clients.top().first << " Cash they have " << Clients.top().second <<  "\n";
-//					cout << Clients.top().second << " \n";
-					
-				}
-				if (!customerCash.empty()){
-						amountInBank += customerCash.top().first;
-						customerCash.pop();
-						while(!customerCash.empty()){
-							Clients.push(make_pair(customerCash.top().second, customerCash.top().first));
-							customerCash.pop();
-						}
-//						cout << "\nAmount in Bank: " << amountInBank << "\n";
-					}
-			
-
-		
-
 
 	}
-
-//	cout << "\n \n";
 
 	cout << amountInBank;
 
