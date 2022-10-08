@@ -98,10 +98,10 @@ void greedy(){
 
 			customerCash = priority_queue<pair<int,int>>();
 
-
+/*
 			if (Clients.top().first == time){
 				
-				while (!Clients.empty() && Clients.top().first >= time){
+				while (!Clients.empty() && Clients.top().first == time){
 //					cout << Clients.top().first << " <= " << time << "? == > ";
 //					cout << Clients.top().second << "\n";
 					customerCash.push(make_pair(Clients.top().second,  Clients.top().first));
@@ -115,8 +115,9 @@ void greedy(){
 //						cout << "\nAmount in Bank: " << amountInBank << "\n";
 					}
 			// If no one needs to leave right now, then we just process the one that is going to leave next
-			} else if (Clients.top().first < time){
-				while (!Clients.empty()  && Clients.top().first <= time){
+			} else 
+*/
+				while (!Clients.empty()  && Clients.top().first >= time){
 
 //					cout << Clients.top().first << " <= " << time << "? == > ";
 //					cout << Clients.top().second << "\n";
@@ -135,7 +136,7 @@ void greedy(){
 						}
 //						cout << "\nAmount in Bank: " << amountInBank << "\n";
 					}
-			}
+			
 
 		
 
